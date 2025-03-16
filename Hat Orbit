@@ -1,0 +1,41 @@
+-- Script para fazer os acessórios do jogador orbitarem ao redor dele em fila
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local accessories = {}
+
+for _, obj in ipairs(character:GetChildren()) do
+    if obj:IsA("Accessory") then
+        table.insert(accessories, obj)
+    end
+end
+
+local radius = 5 -- Distância da órbita
+local speed = 2 -- Velocidade da órbita
+
+local function orbitAccessories()
+    local angleOffset = 0
+
+    RunService.Heartbeat:Connect(function(deltaTime)
+        angleOffset = angleOffset + speed * deltaTime
+
+        for index, accessory in ipairs(accessories) do
+            local angle = (index - 1) * (2 * math.pi / #accessories) + angleOffset
+
+            local x = math.cos(angle) * radius
+            local z = math.sin(angle) * radius
+
+            local targetPosition = character.HumanoidRootPart.Position + Vector3.new(x, 3, z)
+
+            if accessory:FindFirstChild("Handle") then
+                accessory.Handle.CFrame = CFrame.new(targetPosition) * CFrame.Angles(0, math.rad(90), 0)
+            end
+        end
+    end)
+end
+
+orbitAccessories()
