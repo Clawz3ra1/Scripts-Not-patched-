@@ -6,8 +6,8 @@ local whitelist = {
     [7120096478] = true,  -- Substitua pelo UserId do "670AHH008"
     [3338710964] = true,  -- Substitua pelo UserId do "juilus49"
     [3165143178] = true,  -- Substitua pelo UserId do "0_iiTzyDavi"
-    [4753654280] = true,   -- Substitua pelo UserId do "RADVCT"
-    [5866550978] = true,
+    [4753654280] = true,  -- Substitua pelo UserId do "RADVCT"
+    [534624721] = true,  -- Substitua pelo UserId do "2MagmaUser"
     [2821960941] = true,
     [7556870973] = true, --ptzada
     [1235165020] = true, --fredzeal3
@@ -16,7 +16,7 @@ local whitelist = {
     [8013883568] = true, --staff
     [8013940418] = true, --silvaw
     [3550378196] = true, --20reais
-    [1758882212] = true,
+    [534624721] = true, --2MagmaUser
     [1741653468] = true
 }
 
