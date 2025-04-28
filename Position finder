@@ -1,0 +1,84 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = player:WaitForChild("PlayerGui")
+ScreenGui.Name = "PositionUI"
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 200, 0, 150)
+Frame.Position = UDim2.new(0.5, -100, 0.5, -75)
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.BackgroundTransparency = 0
+Frame.BorderSizePixel = 0
+Frame.Parent = ScreenGui
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.ClipsDescendants = true
+Frame:TweenSize(UDim2.new(0, 220, 0, 160), "Out", "Quad", 0.5, true)
+Frame.Active = true
+Frame.Draggable = true -- Tornar móvel
+Frame:SetAttribute("Generated", false)
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 20)
+UICorner.Parent = Frame
+
+local PositionLabel = Instance.new("TextLabel")
+PositionLabel.Size = UDim2.new(0.9, 0, 0.4, 0)
+PositionLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
+PositionLabel.BackgroundTransparency = 1
+PositionLabel.Text = "Posição: (vazia)"
+PositionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+PositionLabel.TextScaled = true
+PositionLabel.Font = Enum.Font.GothamBold
+PositionLabel.Parent = Frame
+
+local GenerateButton = Instance.new("TextButton")
+GenerateButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+GenerateButton.Position = UDim2.new(0.05, 0, 0.6, 0)
+GenerateButton.BackgroundColor3 = Color3.fromRGB(70, 130, 180)
+GenerateButton.Text = "Generate"
+GenerateButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+GenerateButton.TextScaled = true
+GenerateButton.Font = Enum.Font.GothamBold
+GenerateButton.Parent = Frame
+
+local GenerateCorner = Instance.new("UICorner")
+GenerateCorner.CornerRadius = UDim.new(0, 12)
+GenerateCorner.Parent = GenerateButton
+
+local CopyButton = Instance.new("TextButton")
+CopyButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+CopyButton.Position = UDim2.new(0.55, 0, 0.6, 0)
+CopyButton.BackgroundColor3 = Color3.fromRGB(34, 139, 34)
+CopyButton.Text = "Copy"
+CopyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyButton.TextScaled = true
+CopyButton.Font = Enum.Font.GothamBold
+CopyButton.Parent = Frame
+
+local CopyCorner = Instance.new("UICorner")
+CopyCorner.CornerRadius = UDim.new(0, 12)
+CopyCorner.Parent = CopyButton
+
+GenerateButton.MouseButton1Click:Connect(function()
+    local pos = humanoidRootPart.Position
+    local posString = string.format("Vector3.new(%.2f, %.2f, %.2f)", pos.X, pos.Y, pos.Z)
+    PositionLabel.Text = posString
+    Frame:SetAttribute("Generated", true)
+end)
+
+CopyButton.MouseButton1Click:Connect(function()
+    if Frame:GetAttribute("Generated") then
+        local copiedText = PositionLabel.Text
+        if copiedText and copiedText ~= "" and copiedText ~= "Posição: (vazia)" then
+            setclipboard(copiedText) -- Usa API do Roblox para copiar texto
+            print("Copiado para área de transferência:", copiedText)
+        else
+            warn("Nada para copiar!")
+        end
+    else
+        warn("Você precisa gerar a posição primeiro!")
+    end
+end)
